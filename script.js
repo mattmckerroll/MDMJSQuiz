@@ -34,7 +34,7 @@ var myQuestions = [
         correctAnswer: "b"
     },
     {
-        question: "What is the correct place to insert a JavaScript?",
+        question: "What is the correct place to insert a JavaScript script tag?",
         a: "head",
         b: "body",
         c: "a and b",
@@ -71,17 +71,39 @@ var myQuestions = [
     event.preventDefault();
     //if the start button is clicked, start the timer, and render the next question.
     if(event.target.matches("#startBtn")) {
-       
+       pos = 0;
         renderQuestions();
     }
 
-    
+        console.log("correct answer is " + myQuestions[pos].correctAnswer);
+    /* event.target.dataset.ans === */ 
     console.log(event.target.dataset.ans);
+
+    if (event.target.dataset.ans === myQuestions[pos].correctAnswer) {
+        renderQuestions();      
+    }
+    else{
+        time = time -10;
+        renderQuestions();
+    }
   });
+
+
 
   //this function renders the next question
   function renderQuestions(){
-      pos++;
+    
+    if(pos >= myQuestions.length -1){
+        //if the pos  is higher than the nuumber of questions go to highscore page
+        highScores();
+    }
+    else{
+        pos++;
+        questionEl.innerHTML = myQuestions[pos].question;
+    }
+    
+    
+    
     console.log(pos)
     console.log("did it work?");
     answersEl.innerHTML = "";           //clears the answer area
@@ -89,10 +111,7 @@ var myQuestions = [
           setInterval(scoreTimer, 1000); //starts the timer
     }
 
-    questionEl.innerHTML = myQuestions[pos].question;
-    
-    
-    
+
     //here  i construct the answer buttons for every question.
     var chA = document.createElement("button");
     chA.textContent = myQuestions[pos].a;
@@ -117,10 +136,10 @@ var myQuestions = [
     chD.setAttribute("class","button");
     chD.setAttribute("data-ans", "d")
     answersEl.appendChild(chD);
+  }
 
+  function highScores(){
 
-
-    
   }
 
 

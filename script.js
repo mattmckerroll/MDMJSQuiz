@@ -71,35 +71,41 @@ var myQuestions = [
     event.preventDefault();
     //if the start button is clicked, start the timer, and render the next question.
     if(event.target.matches("#startBtn")) {
-       pos = 0;
+
         renderQuestions();
     }
-
-        console.log("correct answer is " + myQuestions[pos].correctAnswer);
-    /* event.target.dataset.ans === */ 
-    console.log(event.target.dataset.ans);
-
-    if (event.target.dataset.ans === myQuestions[pos].correctAnswer) {
-        renderQuestions();      
-    }
-    else{
+    else{ 
+        if (event.target.dataset.ans === myQuestions[pos].correctAnswer) {
+        renderQuestions();
+        qResult = document.getElementById("answerResult")
+        qResult.innerHTML = "CORRECT!"      
+        }
+        else{
         time = time -10;
         renderQuestions();
+        qResult = document.getElementById("answerResult")
+        qResult.innerHTML = "WRONG!"
+        }
     }
   });
 
 
 
-  //this function renders the next question
+  //this function renders the questions
   function renderQuestions(){
     
     if(pos >= myQuestions.length -1){
-        //if the pos  is higher than the nuumber of questions go to highscore page
+        //if the pos  is higher than the number of questions go to highscore page
+        clearInterval();
         highScores();
     }
     else{
+        console.log(pos)
         pos++;
         questionEl.innerHTML = myQuestions[pos].question;
+        if (pos === 0) {
+            setInterval(scoreTimer, 1000);
+        }
     }
     
     
@@ -107,9 +113,6 @@ var myQuestions = [
     console.log(pos)
     console.log("did it work?");
     answersEl.innerHTML = "";           //clears the answer area
-    if (pos === 0) {
-          setInterval(scoreTimer, 1000); //starts the timer
-    }
 
 
     //here  i construct the answer buttons for every question.
@@ -139,6 +142,27 @@ var myQuestions = [
   }
 
   function highScores(){
+    //clearInterval();
+
+    answersEl.removeChild(chA);
+    answersEl.removeChild(chB);
+    answersEl.removeChild(chC);
+    answersEl.removeChild(chD);
+
+    questionEl.innerHTML = "";
+    questionEl.innerHTML = "please enter your initials below to record your score which is: " + time;
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("id", "form");
+    var inputArea = document.createElement("input")
+    form.appendChild(inputArea);
+
+    answersEl.innerHTML = "";
+    
+   // form.innerHTML = "<label for=\"highscore\">Save your score:</label><input type=\"text\" name=\"highscore\" id=\"highscorelist\" />";
+ 
+
 
   }
 
@@ -146,10 +170,12 @@ var myQuestions = [
   function scoreTimer(){
       timerEl.innerHTML = time;
       console.log(time);
-      if (time === 0) {
+      
+      //this makes sure the time (score) never goes negative.
+      if (time <= 0) {
           time = 0;          
       }
-      else{
+      else{ 
           time = time -1;
           console.log(time);
       }

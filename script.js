@@ -98,6 +98,7 @@ var myQuestions = [
         //if the pos  is higher than the number of questions go to highscore page
         clearInterval();
         highScores();
+        return;
     }
     else{
         console.log(pos)
@@ -144,29 +145,30 @@ var myQuestions = [
   function highScores(){
     //clearInterval();
 
-    answersEl.removeChild(chA);
-    answersEl.removeChild(chB);
-    answersEl.removeChild(chC);
-    answersEl.removeChild(chD);
+    answersEl.innerHTML = "";
+    document.getElementById("answerResult").innerHTML = ""
+    
 
     questionEl.innerHTML = "";
     questionEl.innerHTML = "please enter your initials below to record your score which is: " + time;
 
     var form = document.createElement("form");
+    var formel = document.getElementById("formEntry");
     form.setAttribute("method", "POST");
     form.setAttribute("id", "form");
     var inputArea = document.createElement("input")
     form.appendChild(inputArea);
+    formel.appendChild(form);
 
-    answersEl.innerHTML = "";
-    
-   // form.innerHTML = "<label for=\"highscore\">Save your score:</label><input type=\"text\" name=\"highscore\" id=\"highscorelist\" />";
- 
-
-
+      
+   
   }
 
 
+
+
+
+//this function tracks the time/score and places it on the page.
   function scoreTimer(){
       timerEl.innerHTML = time;
       console.log(time);
@@ -181,7 +183,7 @@ var myQuestions = [
       }
   }
 
-
+//initialize the page! 
   init();
 
 

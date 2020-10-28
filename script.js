@@ -103,8 +103,8 @@ var myQuestions = [
         highScores(time);
         return;
     }
-    else{
-        console.log(pos)
+    else{   // as long as the current question the user is on still exists (ie the position isnt higher than the number of questions) then position is increased and then the next qustion is rendered
+        
         pos++;
         questionEl.innerHTML = myQuestions[pos].question;
         if (pos === 0) {
@@ -115,8 +115,7 @@ var myQuestions = [
     
     
     
-    console.log(pos)
-    console.log("did it work?");
+
     answersEl.innerHTML = "";           //clears the answer area
 
 
@@ -169,10 +168,30 @@ var myQuestions = [
     var inputArea = document.createElement("input")
     form.appendChild(inputArea);
     formel.appendChild(form);
+    
+    //adding the go back button
+    var gobackEl = document.createElement("button");
+    gobackEl.setAttribute("class", "button btn btn-danger")
+    gobackEl.textContent = "RESTART"
+    formel.append(gobackEl);
+
+    //adding submit button
+    var submitbtn = document.createElement("button");
+    submitbtn.setAttribute("class", "button btn btn-primary");
+    submitbtn.textContent = "Submit"
+    formel.append(submitbtn);
+
+    //this function refreshes the page to take the user back to the beginning.
+    gobackEl.addEventListener("click", function(event){
+        event.preventDefault();
+        window.location.reload();
+
+
+    });
 
     
-    
-    form.addEventListener("submit", function(event) {
+    //submit button event listener
+    submitbtn.addEventListener("click", function(event) {
         event.preventDefault();
 
         //clearing the answer result area for clarity
@@ -197,11 +216,17 @@ var myQuestions = [
             score: finalScore,
             name: scorename
         };
+ 
+        console.log(scoreboard);
         scoreboard.push(highScores)
+        
 
+        
         //render new li for each score
         for (var i = 0; i < scoreboard.length; i++) {
             var singlescore = scoreboard[i];
+
+            
         
             var li = document.createElement("li");
             li.textContent = "name: " + singlescore.name + " Score:" + singlescore.score;    
@@ -212,8 +237,8 @@ var myQuestions = [
 
         //storing the scores.
         localStorage.setItem("highscores", JSON.stringify(scoreboard));
-        console.log(highScores);
-        console.log(scoreboard);
+
+
 
         
         
@@ -228,7 +253,7 @@ var myQuestions = [
 
      
      
-        console.log(scorename + "<-scorename time->"+time)
+      
       
 
 });
@@ -245,7 +270,7 @@ var myQuestions = [
 //this function tracks the time/score and places it on the page.
   function scoreTimer(){
       timerEl.innerHTML = time;
-      console.log(time);
+
       
       //this makes sure the time (score) never goes negative.
       if (time <= 0) {
@@ -253,7 +278,7 @@ var myQuestions = [
       }
       else{ 
           time = time -1;
-          console.log(time);
+          
       }
   }
 

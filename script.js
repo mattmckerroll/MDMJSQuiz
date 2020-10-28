@@ -61,7 +61,7 @@ var myQuestions = [
     //create start button, start test on click
     var button = document.createElement("button");
     button.textContent = "START!";
-    button.setAttribute("class","button");
+    button.setAttribute("class","button btn btn-primary");
     button.setAttribute("id", "startBtn")
     answersEl.appendChild(button);
        
@@ -99,7 +99,7 @@ var myQuestions = [
     
     if(pos >= myQuestions.length -1){
         //if the pos  is higher than the number of questions go to highscore page and stop the timer
-        clearInterval(intervaltimer);
+        clearInterval(intervaltimer);  //out of ideas here, this should work, but doesn't.
         highScores(time);
         return;
     }
@@ -123,25 +123,25 @@ var myQuestions = [
     //here  i construct the answer buttons for every question.
     var chA = document.createElement("button");
     chA.textContent = myQuestions[pos].a;
-    chA.setAttribute("class","button");
+    chA.setAttribute("class","button btn btn-primary");
     chA.setAttribute("data-ans", "a")
     answersEl.appendChild(chA);
 
     var chB = document.createElement("button");
     chB.textContent = myQuestions[pos].b;
-    chB.setAttribute("class","button");
+    chB.setAttribute("class","button btn btn-primary");
     chB.setAttribute("data-ans", "b")
     answersEl.appendChild(chB);
 
     var chC = document.createElement("button");
     chC.textContent = myQuestions[pos].c;
-    chC.setAttribute("class","button");
+    chC.setAttribute("class","button btn btn-primary");
     chC.setAttribute("data-ans", "c")
     answersEl.appendChild(chC);
 
     var chD = document.createElement("button"); 
     chD.textContent = myQuestions[pos].d;
-    chD.setAttribute("class","button");
+    chD.setAttribute("class","button btn btn-primary");
     chD.setAttribute("data-ans", "d")
     answersEl.appendChild(chD);
   }
@@ -157,7 +157,7 @@ var myQuestions = [
     
     document.getElementById("answerResult").innerHTML = "";
     questionEl.innerHTML = "";
-    questionEl.innerHTML = "please enter your initials below to record your score which is: " + finalScore;
+    questionEl.innerHTML = "Please enter your initials below to record your score which is: " + finalScore;
 
     //constructing the form here
     var form = document.createElement("form");
@@ -174,43 +174,48 @@ var myQuestions = [
     
     form.addEventListener("submit", function(event) {
         event.preventDefault();
+
+        //clearing the answer result area for clarity
+        document.getElementById("answerResult").innerHTML = "";
+
         //do nothing if theres no scorename
         if (scorename === "") {
             return            
         }
         
+        //check for stored scores.
         var storedScores = JSON.parse(localStorage.getItem("highScores"));
         if (storedScores !== null) {
             scoreboard = storedScores
         }
 
+        //grab entered text
         var scorename = inputArea.value;
 
         //storing the high scores here
         const highScores = {
-            score: time,
+            score: finalScore,
             name: scorename
         };
         scoreboard.push(highScores)
 
+        //render new li for each score
         for (var i = 0; i < scoreboard.length; i++) {
             var singlescore = scoreboard[i];
         
             var li = document.createElement("li");
-            li.textContent = "name: " + singlescore.name + " Score:" + singlescore.score;
-            li.setAttribute("data-index", i);
-            
+            li.textContent = "name: " + singlescore.name + " Score:" + singlescore.score;    
             highscoreEl = document.getElementById("highscores");
-
-        
-            
             highscoreEl.appendChild(li);
+
           }
 
+        //storing the scores.
+        localStorage.setItem("highscores", JSON.stringify(scoreboard));
         console.log(highScores);
         console.log(scoreboard);
 
-        document.getElementById("answerResult").innerHTML = "";
+        
         
         
         

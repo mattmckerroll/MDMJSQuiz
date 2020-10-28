@@ -50,7 +50,7 @@ var myQuestions = [
   var time = 75;
   var answersEl = document.getElementById("answers");
   var pos = -1;
-
+  var scoreboard = [];
 //initializes the page and sets things up for the test
   function init(){
 
@@ -78,13 +78,15 @@ var myQuestions = [
         if (event.target.dataset.ans === myQuestions[pos].correctAnswer) {
         renderQuestions();
         qResult = document.getElementById("answerResult")
-        qResult.innerHTML = "CORRECT!"      
+        qResult.innerHTML = "CORRECT!"  
+           
         }
         else{
         time = time -10;
         renderQuestions();
         qResult = document.getElementById("answerResult")
         qResult.innerHTML = "WRONG!"
+        
         }
     }
   });
@@ -94,9 +96,10 @@ var myQuestions = [
   //this function renders the questions
   function renderQuestions(){
     
+    
     if(pos >= myQuestions.length -1){
-        //if the pos  is higher than the number of questions go to highscore page
-        clearInterval();
+        //if the pos  is higher than the number of questions go to highscore page and stop the timer
+        clearInterval(intervaltimer);
         highScores();
         return;
     }
@@ -105,7 +108,8 @@ var myQuestions = [
         pos++;
         questionEl.innerHTML = myQuestions[pos].question;
         if (pos === 0) {
-            setInterval(scoreTimer, 1000);
+            var intervaltimer;
+            intervaltimer = setInterval(scoreTimer(), 1000);
         }
     }
     
@@ -143,26 +147,91 @@ var myQuestions = [
   }
 
   function highScores(){
-    //clearInterval();
-
-    answersEl.innerHTML = "";
-    document.getElementById("answerResult").innerHTML = ""
     
-
+    //clearing the answers area and the text that checks if you get it right 
+    var finalScore = 0;
+    finalScore = time;
+    
+    answersEl.innerHTML = "";
+    
+    
+    document.getElementById("answerResult").innerHTML = "";
     questionEl.innerHTML = "";
-    questionEl.innerHTML = "please enter your initials below to record your score which is: " + time;
+    questionEl.innerHTML = "please enter your initials below to record your score which is: " + finalScore;
 
+    //constructing the form here
     var form = document.createElement("form");
     var formel = document.getElementById("formEntry");
     form.setAttribute("method", "POST");
     form.setAttribute("id", "form");
+
+    //here is where the user actually enters the name info
     var inputArea = document.createElement("input")
     form.appendChild(inputArea);
     formel.appendChild(form);
 
+    
+    
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        //do nothing if theres no scorename
+        if (scorename === "") {
+            return            
+        }
+        
+        var storedScores = JSON.parse(localStorage.getItem("highScores"));
+        if (storedScores !== null) {
+            scoreboard = storedScores
+        }
+
+        var scorename = inputArea.value;
+
+        //storing the high scores here
+        const highScores = {
+            score: time,
+            name: scorename
+        };
+        scoreboard.push(highScores)
+
+        for (var i = 0; i < scoreboard.length; i++) {
+            var singlescore = scoreboard[i];
+        
+            var li = document.createElement("li");
+            li.textContent = "name: " + singlescore.name + " Score:" + singlescore.score;
+            li.setAttribute("data-index", i);
+            
+            highscoreEl = document.getElementById("highscores");
+
+        
+            
+            highscoreEl.appendChild(li);
+          }
+
+        console.log(highScores);
+        console.log(scoreboard);
+
+        document.getElementById("answerResult").innerHTML = "";
+        
+        
+        
+
+
+  
+        document.getElementById("highscores")
+
+
+
+     
+     
+        console.log(scorename + "<-scorename time->"+time)
+      
+
+});
+
+
       
    
-  }
+}
 
 
 

@@ -100,7 +100,7 @@ var myQuestions = [
     if(pos >= myQuestions.length -1){
         //if the pos  is higher than the number of questions go to highscore page and stop the timer
         clearInterval(intervaltimer);
-        highScores();
+        highScores(time);
         return;
     }
     else{
@@ -109,7 +109,7 @@ var myQuestions = [
         questionEl.innerHTML = myQuestions[pos].question;
         if (pos === 0) {
             var intervaltimer;
-            intervaltimer = setInterval(scoreTimer(), 1000);
+            intervaltimer = setInterval(scoreTimer, 1000);
         }
     }
     
@@ -146,11 +146,11 @@ var myQuestions = [
     answersEl.appendChild(chD);
   }
 
-  function highScores(){
+  function highScores(finalScore){
     
     //clearing the answers area and the text that checks if you get it right 
-    var finalScore = 0;
-    finalScore = time;
+    
+    
     
     answersEl.innerHTML = "";
     

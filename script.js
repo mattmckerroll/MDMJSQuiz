@@ -148,9 +148,6 @@ var myQuestions = [
   function highScores(finalScore){
     
     //clearing the answers area and the text that checks if you get it right 
-    
-    
-    
     answersEl.innerHTML = "";
     
     
@@ -237,34 +234,9 @@ var myQuestions = [
 
         //storing the scores.
         localStorage.setItem("highscores", JSON.stringify(scoreboard));
-
-
-
-        
-        
-        
-        
-
-
-  
-        document.getElementById("highscores")
-
-
-
-     
-     
       
-      
-
-});
-
-
-      
-   
+    });
 }
-
-
-
 
 
 //this function tracks the time/score and places it on the page.
